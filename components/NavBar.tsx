@@ -10,6 +10,8 @@ const NavBar = () => {
 
           <p>DevEvent</p>
         </Link>
+
+        <ul></ul>
       </nav>
     </header>
   );
