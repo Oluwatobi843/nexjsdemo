@@ -17,7 +17,7 @@ const Page = () => {
         <h3>Featured Events</h3>
 
         <ul className="events">
-          {[1,2,3,4,5].map((item) =>(
+          {[1,2,3,4,5].map((event) =>(
             <li key={event}>Event{event}</li>
           ))}
         </ul>
