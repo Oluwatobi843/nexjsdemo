@@ -1,10 +1,20 @@
-import React from 'react'
+import Link from "next/link";
+import Image from "next/image";
 
-const EventCard = () => {
+
+interface Props {
+  title: string;
+  image: string;
+}
+
+const EventCard = ({ title, image } : Props) => {
   return (
-    <div>
-      
-    </div>
+    <Link href={`/events`} id="event-card">
+
+      <Image src={image} alt={title} width={410} height={300} className="poster"/>
+
+        <p className="title">{title}</p>
+    </Link> 
   )
 }
 
