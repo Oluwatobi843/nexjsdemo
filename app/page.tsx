@@ -3,8 +3,14 @@ import ExploreBtn from "@/components/ExploreBtn";
 import { title } from "process";
 
 const events = [
-  { image: '/images/event1.png', title: 'Event 1'},
-  { image: '/images/event2.png', title: 'Event 2'},
+  { image: '/images/event1.png',
+     title: 'Event 1',
+     slug: 'event-1',
+     location: 'location-1',
+     date: 'Date-1',
+     time: 'Time-1'
+    },
+ 
 ]
 
 const Page = () => {
