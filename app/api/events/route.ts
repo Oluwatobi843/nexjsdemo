@@ -3,11 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import Event from "@/database/event.model";
 
-// Ensure Cloudinary is configured
+// ✅ Uses CLOUDINARY_URL automatically from .env.local
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!,
+  secure: true,
 });
 
 export async function POST(req: NextRequest) {
@@ -28,11 +26,11 @@ export async function POST(req: NextRequest) {
     }
 
     // ✅ Get image file
-    const file = formData.get("image") as File;
+    const file = formData.get("image");
 
-    if (!file) {
+    if (!file || !(file instanceof File)) {
       return NextResponse.json(
-        { message: "Image file is required" },
+        { message: "Valid image file is required" },
         { status: 400 },
       );
     }
@@ -55,20 +53,36 @@ export async function POST(req: NextRequest) {
 
     event.image = uploadResult.secure_url;
 
-    // ✅ Normalize BEFORE saving
+    // ✅ Normalize mode
     if (event.mode) {
       event.mode = String(event.mode).toLowerCase().trim();
     }
 
+    // ✅ Safe parse agenda (supports JSON and comma-separated text)
     if (event.agenda && typeof event.agenda === "string") {
-      event.agenda = JSON.parse(event.agenda);
+      try {
+        event.agenda = JSON.parse(event.agenda);
+      } catch {
+        event.agenda = event.agenda
+          .split(",")
+          .map((item: string) => item.trim())
+          .filter(Boolean);
+      }
     }
 
+    // ✅ Safe parse tags (supports JSON and comma-separated text)
     if (event.tags && typeof event.tags === "string") {
-      event.tags = JSON.parse(event.tags);
+      try {
+        event.tags = JSON.parse(event.tags);
+      } catch {
+        event.tags = event.tags
+          .split(",")
+          .map((item: string) => item.trim())
+          .filter(Boolean);
+      }
     }
 
-    // ✅ Create event ONCE
+    // ✅ Create event
     const createdEvent = await Event.create(event);
 
     return NextResponse.json(
@@ -78,13 +92,13 @@ export async function POST(req: NextRequest) {
       },
       { status: 201 },
     );
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
 
     return NextResponse.json(
       {
         message: "Event Creation Failed",
-        error: e instanceof Error ? e.message : "Unknown",
+        error: e.message,
       },
       { status: 500 },
     );
