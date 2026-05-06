@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
       {
         message: "Event Creation Failed",
         error: e.message,
-      },
+      }, 
       { status: 500 },
     );
   }
