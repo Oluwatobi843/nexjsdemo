@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
         event: createdEvent,
       },
       { status: 201 },
-    );
+    );  
   } catch (e: any)  {
     console.error(e);
 
