@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
       },
       { status: 201 },
     );
-  } catch (e: any) {
+  } catch (e: any)  {
     console.error(e);
 
     return NextResponse.json(
