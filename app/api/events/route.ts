@@ -2,7 +2,7 @@ import connectDB from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import Event from "@/database/event.model";
-import { error } from "console";
+
 
 // ✅ Uses CLOUDINARY_URL automatically from .env.local
 cloudinary.config({
