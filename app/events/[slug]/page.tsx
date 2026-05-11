@@ -9,7 +9,7 @@ const EventDetails = async ({ params }: { params: Promise <{ slug: string}>}) =>
   const request = await fetch(`${BASE_URL}/api/events/${slug}`);
   const { data } = await request.json();
 
-  if(!data) return notFound
+  if(event) return notFound
 
    return (
     <section id="event">
